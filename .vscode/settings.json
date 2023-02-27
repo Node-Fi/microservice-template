@@ -1,0 +1,33 @@
+{
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#b9a4e0",
+    "titleBar.inactiveBackground": "#b9a4e099",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveForeground": "#15202b99",
+    "activityBar.activeBackground": "#d6caed",
+    "activityBar.background": "#d6caed",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#c67e58",
+    "activityBarBadge.foreground": "#15202b",
+    "commandCenter.border": "#15202b99",
+    "sash.hoverBorder": "#d6caed",
+    "statusBar.background": "#b9a4e0",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#9c7ed3",
+    "statusBarItem.remoteBackground": "#b9a4e0",
+    "statusBarItem.remoteForeground": "#15202b"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true,
+  "eslint.nodePath": ".yarn/sdks",
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "peacock.color": "#b9a4e0"
+}

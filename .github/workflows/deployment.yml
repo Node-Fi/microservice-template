@@ -1,0 +1,23 @@
+name: Deployment
+
+on: workflow_dispatch
+
+# This serializes deploys from main.
+concurrency:
+  group: env-${{ github.ref }}
+
+jobs:
+  job_id:
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - uses: "actions/checkout@v3"
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
+          service_account: "my-service-account@my-project.iam.gserviceaccount.com"

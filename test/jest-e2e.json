@@ -1,0 +1,15 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "../",
+  "testEnvironment": "node",
+  "testRegex": ".e2e.test.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "~server/(.*)$": "<rootDir>/server/$1",
+    "~subscribers/(.*)$": "<rootDir>/subscribers/$1",
+    "~cron/(.*)$": "<rootDir>/cron/$1",
+    "~common/(.*)$": "<rootDir>/common/$1"
+  }
+}
