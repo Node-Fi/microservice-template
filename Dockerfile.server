@@ -1,0 +1,29 @@
+FROM node:18 As development
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Copy application dependency manifests to the container image.
+# A wildcard is used to ensure copying both package.json AND package-lock.json (when available).
+# Copying this first prevents re-running npm install on every code change.
+COPY --chown=node:node package*.json ./
+COPY --chown=node:node .yarn/ .yarn/
+COPY --chown=node:node .yarnrc.yml ./
+COPY --chown=node:node knexfile.ts ./
+
+COPY --chown=node:node tsconfig.json ./
+COPY --chown=node:node tsconfig.build.json ./
+COPY --chown=node:node tsconfig.server.json ./
+
+
+ENV NODE_ENV production
+
+RUN yarn install
+
+# Bundle app source
+COPY --chown=node:node common/ ./common
+COPY --chown=node:node server/ ./server
+
+RUN yarn build:server
+# Start the server using the production build
+CMD [ "node", "dist/server/server/main.js" ]

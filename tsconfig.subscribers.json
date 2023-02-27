@@ -1,4 +1,7 @@
 {
   "extends": "./tsconfig.build.json",
-  "exclude": ["./src/**/*", "./cron/**/*"]
+  "exclude": ["./src/**/*", "./cron/**/*", "./test/**/*"],
+  "compilerOptions": {
+    "outDir": "./dist/subscribers",
+  }
 }

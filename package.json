@@ -6,7 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build:server": "nest build --path tsconfig.server.json",
+    "build:subscribers": "tsc --build tsconfig.subscribers.json",
+    "build:cron": "tsc --build tsconfig.cron.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
