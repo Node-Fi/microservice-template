@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import { config } from 'dotenv';
 
 import helmet from 'helmet';
-import { HandlerResolver, init } from './handlers';
+import { HandlerResolver } from './handlers';
 import { Message } from '@google-cloud/pubsub';
 config({ path: `.env.${process.env.NODE_ENV}` });
 
