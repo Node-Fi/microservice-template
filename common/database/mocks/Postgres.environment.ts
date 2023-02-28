@@ -37,10 +37,12 @@ class MockConnection {
   }
 }
 
-export const startMockDatabase = async () => {
+export const startMockDatabase = async (skipMigration = false) => {
   if (KnexController.getInstance().getKnex()) {
     return KnexController.knex();
   }
+
+  console.log('Starting mock database');
   const mockConnection = new MockConnection();
   await mockConnection.init();
   const knex = KnexController.getInstance().init({
@@ -50,6 +52,8 @@ export const startMockDatabase = async () => {
       directory: join(__dirname, '..', 'migrations'),
     },
   });
+
+  if (skipMigration) return knex;
 
   await knex.migrate.latest();
 

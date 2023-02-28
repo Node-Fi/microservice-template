@@ -9,6 +9,7 @@
     "build:server": "nest build --path tsconfig.server.json",
     "build:subscribers": "tsc --build tsconfig.subscribers.json",
     "build:cron": "tsc --build tsconfig.cron.json",
+    "build": "yarn build:server && yarn build:subscribers && yarn build:cron",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -23,6 +24,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:integration": "jest --config ./test/jest-integration.json",
+    "test:migrations": "jest --config ./test/jest-migrations.json",
     "typecheck": "tsc --build"
   },
   "dependencies": {
