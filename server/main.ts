@@ -1,22 +1,33 @@
-import { INestMicroservice } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { Transport } from '@nestjs/microservices';
-import { AppModule } from './app.module';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
+import { AppModule } from './root/app.module';
+import { useContainer } from 'class-validator';
+import { ExceptionFilter } from './exceptions';
+import { startMockDatabase } from '~common/database/mocks/Postgres.environment';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 
 async function bootstrap() {
-  const microservicesOptions: any = {
-    transport: Transport.TCP,
-    options: {
-      host: '127.0.0.1',
-      port: 8875,
-    },
-  };
+  if (process.env.NODE_ENV === 'development') {
+    await startMockDatabase(true);
+  }
 
-  const app: INestMicroservice = await NestFactory.createMicroservice(
+  const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    microservicesOptions,
+    new FastifyAdapter(),
   );
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  app.listen();
+  const { httpAdapter } = app.get(HttpAdapterHost);
+
+  app.useGlobalFilters(new ExceptionFilter(httpAdapter));
+
+  const config = app.get(ConfigService, { strict: false });
+  const port = config.get<number>('app.port') ?? 8080;
+  console.log(`Listening on port ${port}`);
+
+  await app.listen(port);
 }
 bootstrap();
