@@ -33,7 +33,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/yarn
-      - run: yarn test
+      - run: yarn coverage --coverageDirectory=./coverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
 
   integration:
     runs-on: ubuntu-latest

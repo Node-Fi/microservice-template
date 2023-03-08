@@ -21,6 +21,11 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
 
+    const adminOnly = this.reflector.getAllAndOverride('AdminOnly', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
     if (isPublic) return true;
 
     const httpContext = context.switchToHttp();
@@ -34,8 +39,13 @@ export class RolesGuard implements CanActivate {
     }
 
     if (jwtRequired) {
+      console.log('jwtRequired', jwtRequired, authType);
       return authType === 'jwt';
     }
-    return true;
+
+    if (adminOnly) {
+      return !!headers['x-node-admin'];
+    }
+    return false;
   }
 }
