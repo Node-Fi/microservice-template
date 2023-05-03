@@ -11,3 +11,17 @@ export interface Token {
   extensions: Record<string, unknown>;
   tags: string[];
 }
+
+export interface Wallet {
+  wid: number;
+  address: string;
+}
+
+export interface WalletTenantPivot {
+  wallet: number;
+  tenant: number;
+}
+
+export interface Tenant {
+  tid: number;
+}

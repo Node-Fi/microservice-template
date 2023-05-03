@@ -1,5 +1,7 @@
 import { ArgumentConfig, parse } from 'ts-command-line-args';
-import { ActionResolver, init } from './Actions';
+import { ActionResolver } from './Actions';
+import { initEnvironment } from '~common/utils/initEnvironment';
+import { initializeActions } from './initialize';
 
 const argDefinition = {
   action: {
@@ -19,7 +21,8 @@ interface Args extends ArgsBase {
 
 async function main() {
   const args = parse<Args>(argDefinition as unknown as ArgumentConfig<Args>);
-  init();
+  initializeActions();
+  await initEnvironment();
 
   const action = ActionResolver.getInstance().resolveAction(args.action);
 

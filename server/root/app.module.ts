@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -12,6 +12,17 @@ import { PubSubModule } from '~server/pubsub/pubsub.module';
       expandVariables: true,
       load: config,
     }),
+    CacheModule.register(
+      process.env.REDIS_PORT
+        ? {
+            host: process.env.REDIS_HOST,
+            port: parseInt(process.env.REDIS_PORT, 10),
+            isGlobal: true,
+          }
+        : {
+            isGlobal: true,
+          },
+    ),
     PubSubModule,
   ],
   controllers: [AppController],

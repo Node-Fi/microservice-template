@@ -1,5 +1,6 @@
 import { Message } from '@google-cloud/pubsub';
-import { HandlerResolver, init } from '~subscribers/handlers';
+import { HandlerResolver } from '~subscribers/handlers';
+import { initHandlers } from '~subscribers/handlers/loadHandlers';
 import { TestHandler } from '~subscribers/handlers/TestHandler';
 
 describe('Handler', () => {
@@ -19,7 +20,7 @@ describe('Handler', () => {
   it('Should register handlers on init', () => {
     const expectedTopic = 'test-topic';
 
-    init();
+    initHandlers();
     const handler = HandlerResolver.getInstance().resolveHandler(expectedTopic);
 
     expect(handler).toBeDefined();
@@ -29,7 +30,7 @@ describe('Handler', () => {
   it('Should return undefined for unsupported topic', () => {
     const expectedTopic = 'test-topic-000';
 
-    init();
+    initHandlers();
     const handler = HandlerResolver.getInstance().resolveHandler(expectedTopic);
 
     expect(handler).toBeUndefined();
@@ -39,7 +40,7 @@ describe('Handler', () => {
     const expectedTopic = 'test-topic';
     const expectedValue = 'test';
 
-    init();
+    initHandlers();
     const handler = HandlerResolver.getInstance().resolveHandler(expectedTopic);
 
     const result = await handler.handle({

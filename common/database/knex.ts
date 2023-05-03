@@ -1,11 +1,11 @@
 import knexConstructor, { Knex } from 'knex';
-import { Wallet } from './models/Wallet';
+import { Wallet } from './models';
 import * as knexConfig from '../../knexfile';
 
 // Model types go here
 declare module 'knex/types/tables' {
   interface Tables {
-    wallets: Knex.CompositeTableType<Wallet, Pick<Wallet, 'wid'>>;
+    wallets: Wallet;
   }
 }
 

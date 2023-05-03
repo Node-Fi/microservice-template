@@ -1,4 +1,5 @@
-import { Message } from '@google-cloud/pubsub';
+import { Message, PubSub } from '@google-cloud/pubsub';
+import { PubSubTopic } from '~subscribers/topics';
 
 export class HandlerResolver {
   private handlers: Map<string, Handler<any>> = new Map();
@@ -37,10 +38,34 @@ export abstract class Handler<T, R = unknown> {
 
   public abstract process(data: T, messageRaw: Message): Promise<R>;
 
-  public handle(event: Message) {
-    const decodedData = event.data.toString('utf-8');
+  public async handle(event: Message) {
+    const decodedData = Buffer.from(event.data.toString(), 'base64').toString();
     const data = JSON.parse(decodedData) as T;
 
-    return this.process(data, event);
+    try {
+      const result = await this.process(data, event);
+      return result;
+    } catch (e) {
+      const pubsubClient = new PubSub({
+        projectId: process.env.GCP_ID ?? 'node-wallet',
+      });
+
+      const topic = pubsubClient.topic(PubSubTopic.SubscriptionFailed);
+      const message = {
+        event: {
+          topic: this.topic,
+          data,
+        },
+        raw: event,
+        error: e,
+      };
+      const buffer = Buffer.from(JSON.stringify(message));
+
+      await topic.publishMessage({
+        data: buffer,
+      });
+
+      throw e;
+    }
   }
 }

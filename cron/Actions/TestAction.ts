@@ -1,8 +1,9 @@
+import { TaskName } from '~cron/config';
 import { Action } from './Action';
 
 export class TestAction extends Action<Record<string, unknown>, string> {
   constructor() {
-    super('test-action');
+    super(TaskName.TestAction);
   }
 
   public async run(): Promise<string> {

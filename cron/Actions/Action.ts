@@ -1,5 +1,7 @@
+import { TaskName } from '~cron/config';
+
 export class ActionResolver {
-  private actions: Map<string, Action> = new Map();
+  private actions: Map<TaskName, Action> = new Map();
   private static instance: ActionResolver;
 
   private constructor() {
@@ -28,7 +30,7 @@ export class ActionResolver {
   public resolveAction<T extends Record<string, unknown>, R = void>(
     name: string,
   ): Action<T, R> {
-    const action = this.actions.get(name) as Action<T, R>;
+    const action = this.actions.get(name as TaskName) as Action<T, R>;
 
     if (!action) {
       throw new Error(`Action ${name} not found`);
@@ -42,7 +44,7 @@ export abstract class Action<
   T extends Record<string, unknown> = Record<string, unknown>,
   R = unknown,
 > {
-  constructor(public name: string) {
+  constructor(public name: TaskName) {
     ActionResolver.getInstance().registerAction(this);
   }
 

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { TokenFilter } from './dto/tokenFilter.dto';
-import { Token } from '~common/database/models/Token';
+import { Token } from '~common/database/models';
 import { Knex } from 'knex';
 import { KnexController } from '~common/database/knex';
 
